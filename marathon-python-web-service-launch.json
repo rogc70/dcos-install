@@ -1,0 +1,31 @@
+{
+  "id": "/python-web-service",
+  "instances": 3,
+  "portDefinitions": [
+    {
+      "name": "python-web-service",
+      "protocol": "tcp",
+      "port": 0
+    }
+  ],
+  "cpus": 0.1,
+  "mem": 128,
+  "requirePorts": false,
+  "fetch": [
+    {
+      "uri": "https://s3-us-west-2.amazonaws.com/greg-palmer/python-web-service-example/python_web_service.py"
+    }
+  ],
+  "cmd": "export NGINX_LOAD_BALANCED_URL=nginx-container.marathon.l4lb.thisdcos.directory:80 && export PYTHON_SERVICE_HTTP_PORT=$PORT0 && /opt/mesosphere/bin/python3 $MESOS_SANDBOX/python_web_service.py \n",
+  "healthChecks": [
+    {
+      "portIndex": 0,
+      "protocol": "MESOS_HTTP",
+      "path": "/"
+    }
+  ],
+  "labels": {
+    "HAPROXY_GROUP": "external"
+  },
+  "env": {}
+}
